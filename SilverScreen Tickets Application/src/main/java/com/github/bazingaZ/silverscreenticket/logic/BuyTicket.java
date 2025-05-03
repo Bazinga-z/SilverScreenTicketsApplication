@@ -17,15 +17,23 @@ public class BuyTicket {
         movie.setTickets(ticket);
     }
 
-    public int buyTicket(int movieId, int numberOfRequestedTickets) {
+    public int buyTicket(int movieId, int numberOfRequestedTickets, int totalMoneyPaidForTickets) {
         Movie movie = movies.get(movieId);
         if(movie.getCountOfTickets() == 0) {
             throw new NoTicketsLeftException("No Tickets Left For This Movie.");
         }
 
+        int totalMoneyNeccessaryToBuyTickets = 0;
+
         //removing tickets from the end of the list.
         for(int i = 0; i < numberOfRequestedTickets; i++) {
+           Ticket ticket = movie.getTickets().get(movie.getTickets().size() - 1);
+           totalMoneyNeccessaryToBuyTickets += ticket.getPrice();
             movie.getTickets().remove(movie.getTickets().size() - 1);
+        }
+
+        if(totalMoneyPaidForTickets < totalMoneyNeccessaryToBuyTickets) {
+            throw new InsufficientMoneyException("Insufficient Money To Buy Tickets.");
         }
 
         int remainingNumberOfTickets = movie.getCountOfTickets();

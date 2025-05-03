@@ -14,4 +14,8 @@ public class Ticket {
     public int getMoveId() {
         return moveId;
     }
+
+    public int getPrice() {
+        return price;
+    }
 }

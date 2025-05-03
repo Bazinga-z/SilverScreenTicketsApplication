@@ -46,7 +46,9 @@ class BuyTicketShould {
         BuyTicket buyTicket = new BuyTicket(movies);
         int movieId = movie.getId();
 
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5))
+        int totalMoneyPaidForTickets = 50000;
+
+        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
                 .isInstanceOf(NoTicketsLeftException.class)
                 .hasMessage("No Tickets Left For This Movie.");
     }
@@ -69,7 +71,9 @@ class BuyTicketShould {
 
         buyTicket.add(tickets,movieId);
 
-        int remainingNumberOfTickets = buyTicket.buyTicket(movieId,1);
+        int totalMoneyPaidForTickets = 50000;
+
+        int remainingNumberOfTickets = buyTicket.buyTicket(movieId,1, totalMoneyPaidForTickets);
 
         Assertions.assertThat(movie.getCountOfTickets()).isEqualTo(remainingNumberOfTickets);
     }
@@ -77,6 +81,25 @@ class BuyTicketShould {
     @Test
     void shouldPreventPurchaseWhenInsufficientFunds() {
         // Calculate total price and throw a custom exception if funds are insufficient.
+        List<Movie> movies = new ArrayList<>();
+        Movie movie = new Movie(0);
+        movies.add(movie);
+
+        int movieId =movie.getId();
+        BuyTicket buyTicket = new BuyTicket(movies);
+
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(new Ticket(1,50000,movieId));
+        tickets.add(new Ticket(2,50000,movieId));
+
+        buyTicket.add(tickets,movieId);
+
+        int totalMoneyPaidForTickets = 40000;
+
+        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets))
+                .isInstanceOf(InsufficientMoneyException.class)
+                .hasMessage("Insufficient Money To Buy Tickets.");
+
     }
 
 
