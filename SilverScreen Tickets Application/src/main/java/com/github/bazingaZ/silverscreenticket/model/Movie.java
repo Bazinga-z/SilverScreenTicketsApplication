@@ -2,7 +2,7 @@ package com.github.bazingaZ.silverscreenticket.model;
 
 import java.util.List;
 
-public class Move {
+public class Movie {
     private int id;
     private String name;
     private List<Ticket> tickets;
@@ -17,4 +17,7 @@ public class Move {
         return tickets.size();
     }
 
+    public int getId() {
+        return id;
+    }
 }
