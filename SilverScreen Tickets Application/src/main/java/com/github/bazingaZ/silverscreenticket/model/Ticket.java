@@ -1,23 +1,14 @@
 package com.github.bazingaZ.silverscreenticket.model;
 
 public class Ticket {
-    private int id;
-    private int price;
-    private int moveId;
+    private final int id;
+    private final int price;
+    private final int moveId;
 
     public Ticket(int id, int price, int moveId) {
         this.id = id;
         this.price = price;
         this.moveId = moveId;
-    }
-
-
-    public int calculatePrice(int countOfTicket) {
-        return this.price * countOfTicket;
-    }
-
-    public int getMoveId() {
-        return moveId;
     }
 
     public int getPrice() {

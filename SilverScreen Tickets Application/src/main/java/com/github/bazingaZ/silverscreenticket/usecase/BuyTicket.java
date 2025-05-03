@@ -2,13 +2,13 @@ package com.github.bazingaZ.silverscreenticket.usecase;
 
 import com.github.bazingaZ.silverscreenticket.model.Movie;
 import com.github.bazingaZ.silverscreenticket.model.Ticket;
+import com.github.bazingaZ.silverscreenticket.model.TicketGroup;
 
 import java.util.List;
 
 public class BuyTicket {
 
 
-    private static final int FIRT_TICKET = 0;
     private final Cinema cinema;
 
     public BuyTicket(Cinema cinema) {
@@ -16,32 +16,29 @@ public class BuyTicket {
     }
 
     public void add(List<Ticket> ticket, int movieId) {
-        Movie movie = cinema.getMove(movieId);
+        Movie movie = getMove(movieId);
         movie.setTickets(ticket);
     }
 
-    public int buyTicket(int movieId, int numberOfRequestedTickets, int totalMoneyPaidForTickets) {
+    public int buy(int movieId, int numberOfRequestedTickets, int totalMoneyPaidForTickets) {
 
-        Movie movie = cinema.getMove(movieId);
+        Movie movie = getMove(movieId);
         List<Ticket> tickets = cinema.getTickets(movieId);
+        TicketGroup ticketGroup = new TicketGroup(tickets);
 
-        if (tickets.isEmpty() || tickets.size() < numberOfRequestedTickets) {
-            throw new NoTicketsLeftException("No Tickets Left For This Movie.");
-        }
+        int totalMoneyNecessary =
+                ticketGroup.calculatePrice(numberOfRequestedTickets);
 
+        ticketGroup.remove(numberOfRequestedTickets);
 
-        Ticket ticket = tickets.get(FIRT_TICKET);
-        int totalMoneyNeccessaryToBuyTickets = ticket.calculatePrice(numberOfRequestedTickets);
-
-        //removing tickets from the end of the list.
-        for (int index = 0; index < numberOfRequestedTickets; index++) {
-            tickets.remove(tickets.size() - 1);
-        }
-
-        if (totalMoneyPaidForTickets < totalMoneyNeccessaryToBuyTickets) {
+        if (totalMoneyPaidForTickets < totalMoneyNecessary) {
             throw new InsufficientMoneyException("Insufficient Money To Buy Tickets.");
         }
 
         return movie.getCountOfTickets();
+    }
+
+    private Movie getMove(int movieId) {
+        return cinema.getMove(movieId);
     }
 }

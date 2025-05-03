@@ -64,7 +64,7 @@ class BuyTicketShould {
 
         int totalMoneyPaidForTickets = 50000;
 
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
+        Assertions.assertThatThrownBy(() -> buyTicket.buy(movieId, 5, totalMoneyPaidForTickets))
                 .isInstanceOf(NoTicketsLeftException.class);
     }
 
@@ -89,7 +89,7 @@ class BuyTicketShould {
 
         int totalMoneyPaidForTickets = 50000;
 
-        int remainingNumberOfTickets = buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets);
+        int remainingNumberOfTickets = buyTicket.buy(movieId, 1, totalMoneyPaidForTickets);
 
         Assertions.assertThat(remainingNumberOfTickets).isEqualTo(1);
 
@@ -114,7 +114,7 @@ class BuyTicketShould {
 
         int totalMoneyPaidForTickets = 40000;
 
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets))
+        Assertions.assertThatThrownBy(() -> buyTicket.buy(movieId, 1, totalMoneyPaidForTickets))
                 .isInstanceOf(InsufficientMoneyException.class);
 
     }
