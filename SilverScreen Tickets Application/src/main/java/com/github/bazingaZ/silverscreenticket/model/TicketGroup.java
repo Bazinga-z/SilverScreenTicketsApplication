@@ -31,9 +31,16 @@ public class TicketGroup {
 
     }
 
+    public int getTicketsSize() {
+        return tickets.size();
+    }
+
     private void existLengthTicket(int countOfTicket) {
         if (tickets.size() < countOfTicket)
             throw new NoTicketsLeftException("");
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
 }
