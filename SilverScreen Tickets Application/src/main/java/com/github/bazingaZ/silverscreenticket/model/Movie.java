@@ -6,7 +6,7 @@ public class Movie {
     private int id;
     private String name;
     private List<Ticket> tickets;
-    private int countOfTickets;
+
 
     public Movie(int id) {
         this.id = id;
@@ -15,6 +15,7 @@ public class Movie {
     public Movie() {
 
     }
+
 
 
     public void setTickets(List<Ticket> tickets) {

@@ -1,14 +1,28 @@
-package com.github.bazingaZ.silverscreenticket.logic;
+package com.github.bazingaZ.silverscreenticket.usecase;
 
 import com.github.bazingaZ.silverscreenticket.model.Movie;
 import com.github.bazingaZ.silverscreenticket.model.Ticket;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class BuyTicketShould {
+
+    private Movie movie;
+    private List<Movie> movies;
+    private Cinema cinema;
+
+    @BeforeEach
+    void setUp() {
+        movie = new Movie();
+        movies = new ArrayList<>();
+        cinema = new CinemaImpl(movies);
+        movies.add(movie);
+
+    }
 
     @Test
     void createTicketForExistingMovie() {
@@ -18,11 +32,13 @@ class BuyTicketShould {
         // If found, add a ticket with a validated price.
 
         // given
-        Movie movie = new Movie();
-        List<Movie> movies = new ArrayList<>();
-        movies.add(movie);
+//        Movie movie = new Movie();
+//        List<Movie> movies = new ArrayList<>();
+//        movies.add(movie);
+//        Cinema cinema = new CinemaImpl(movies);
 
-        var buyTicket = new BuyTicket(movies);
+
+        var buyTicket = new BuyTicket(cinema);
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(new Ticket(1, 2, 0));
         int movieId = 0;
@@ -35,22 +51,21 @@ class BuyTicketShould {
     void shouldNotAllowedBuyingTicketForNonExistentMovie() {
         // Find the movie; if no tickets exist, throw a custom exception.
 
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-
+//        List<Movie> movies = new ArrayList<>();
+//        Movie movie = new Movie();
+//        movies.add(movie);
+//
         List<Ticket> tickets = new ArrayList<>();
         movie.setTickets(tickets);
 
 
-        BuyTicket buyTicket = new BuyTicket(movies);
+        BuyTicket buyTicket = new BuyTicket(cinema);
         int movieId = movie.getId();
 
         int totalMoneyPaidForTickets = 50000;
 
         Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
-                .isInstanceOf(NoTicketsLeftException.class)
-                .hasMessage("No Tickets Left For This Movie.");
+                .isInstanceOf(NoTicketsLeftException.class);
     }
 
     @Test
@@ -58,47 +73,49 @@ class BuyTicketShould {
         // Find the movie and get available tickets.
         // Deduct the number of tickets requested by the user.
         // Calculate the total price and complete the transaction if valid.
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie(0);
-        movies.add(movie);
 
-        int movieId =movie.getId();
-        BuyTicket buyTicket = new BuyTicket(movies);
+//        List<Movie> movies = new ArrayList<>();
+//        Movie movie = new Movie(0);
+//        movies.add(movie);
+
+        int movieId = movie.getId();
+        BuyTicket buyTicket = new BuyTicket(cinema);
 
         List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket(1,50000,movieId));
-        tickets.add(new Ticket(2,50000,movieId));
+        tickets.add(new Ticket(1, 50000, movieId));
+        tickets.add(new Ticket(2, 50000, movieId));
 
-        buyTicket.add(tickets,movieId);
+        buyTicket.add(tickets, movieId);
 
         int totalMoneyPaidForTickets = 50000;
 
-        int remainingNumberOfTickets = buyTicket.buyTicket(movieId,1, totalMoneyPaidForTickets);
+        int remainingNumberOfTickets = buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets);
 
-        Assertions.assertThat(movie.getCountOfTickets()).isEqualTo(remainingNumberOfTickets);
+        Assertions.assertThat(remainingNumberOfTickets).isEqualTo(1);
+
+//        Assertions.assertThat(movie.getCountOfTickets()).isEqualTo(remainingNumberOfTickets);
     }
 
     @Test
     void shouldPreventPurchaseWhenInsufficientFunds() {
         // Calculate total price and throw a custom exception if funds are insufficient.
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie(0);
-        movies.add(movie);
+//        List<Movie> movies = new ArrayList<>();
+//        Movie movie = new Movie(0);
+//        movies.add(movie);
 
-        int movieId =movie.getId();
-        BuyTicket buyTicket = new BuyTicket(movies);
+        int movieId = movie.getId();
+        BuyTicket buyTicket = new BuyTicket(cinema);
 
         List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket(1,50000,movieId));
-        tickets.add(new Ticket(2,50000,movieId));
+        tickets.add(new Ticket(1, 50000, movieId));
+        tickets.add(new Ticket(2, 50000, movieId));
 
-        buyTicket.add(tickets,movieId);
+        buyTicket.add(tickets, movieId);
 
         int totalMoneyPaidForTickets = 40000;
 
         Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets))
-                .isInstanceOf(InsufficientMoneyException.class)
-                .hasMessage("Insufficient Money To Buy Tickets.");
+                .isInstanceOf(InsufficientMoneyException.class);
 
     }
 

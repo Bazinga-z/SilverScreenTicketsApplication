@@ -1,4 +1,4 @@
-package com.github.bazingaZ.silverscreenticket.logic;
+package com.github.bazingaZ.silverscreenticket.usecase;
 
 public class InsufficientMoneyException extends RuntimeException{
 

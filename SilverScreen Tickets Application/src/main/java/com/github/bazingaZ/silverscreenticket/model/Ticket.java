@@ -11,6 +11,11 @@ public class Ticket {
         this.moveId = moveId;
     }
 
+
+    public int calculatePrice(int countOfTicket) {
+        return this.price * countOfTicket;
+    }
+
     public int getMoveId() {
         return moveId;
     }
