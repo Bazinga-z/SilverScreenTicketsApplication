@@ -8,6 +8,14 @@ public class Movie {
     private List<Ticket> tickets;
     private int countOfTickets;
 
+    public Movie(int id) {
+        this.id = id;
+    }
+
+    public Movie() {
+
+    }
+
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
@@ -19,5 +27,10 @@ public class Movie {
 
     public int getId() {
         return id;
+    }
+
+
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 }

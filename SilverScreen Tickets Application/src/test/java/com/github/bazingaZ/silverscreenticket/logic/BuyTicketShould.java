@@ -46,7 +46,7 @@ class BuyTicketShould {
         BuyTicket buyTicket = new BuyTicket(movies);
         int movieId = movie.getId();
 
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId))
+        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5))
                 .isInstanceOf(NoTicketsLeftException.class)
                 .hasMessage("No Tickets Left For This Movie.");
     }
@@ -56,6 +56,22 @@ class BuyTicketShould {
         // Find the movie and get available tickets.
         // Deduct the number of tickets requested by the user.
         // Calculate the total price and complete the transaction if valid.
+        List<Movie> movies = new ArrayList<>();
+        Movie movie = new Movie(0);
+        movies.add(movie);
+
+        int movieId =movie.getId();
+        BuyTicket buyTicket = new BuyTicket(movies);
+
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(new Ticket(1,50000,movieId));
+        tickets.add(new Ticket(2,50000,movieId));
+
+        buyTicket.add(tickets,movieId);
+
+        int remainingNumberOfTickets = buyTicket.buyTicket(movieId,1);
+
+        Assertions.assertThat(movie.getCountOfTickets()).isEqualTo(remainingNumberOfTickets);
     }
 
     @Test

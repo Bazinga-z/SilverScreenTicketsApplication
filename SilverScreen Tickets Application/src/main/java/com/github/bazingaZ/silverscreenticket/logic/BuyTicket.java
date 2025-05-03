@@ -17,10 +17,18 @@ public class BuyTicket {
         movie.setTickets(ticket);
     }
 
-    public void buyTicket(int movieId) {
+    public int buyTicket(int movieId, int numberOfRequestedTickets) {
         Movie movie = movies.get(movieId);
         if(movie.getCountOfTickets() == 0) {
             throw new NoTicketsLeftException("No Tickets Left For This Movie.");
         }
+
+        //removing tickets from the end of the list.
+        for(int i = 0; i < numberOfRequestedTickets; i++) {
+            movie.getTickets().remove(movie.getTickets().size() - 1);
+        }
+
+        int remainingNumberOfTickets = movie.getCountOfTickets();
+        return remainingNumberOfTickets;
     }
 }
