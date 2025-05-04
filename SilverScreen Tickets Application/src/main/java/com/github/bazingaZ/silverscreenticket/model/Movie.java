@@ -7,6 +7,8 @@ public class Movie {
     private String name;
     private List<Ticket> tickets;
     private int countOfTickets;
+    private String genre;
+    private int duration;
 
     public Movie(int id) {
         this.id = id;
@@ -14,6 +16,14 @@ public class Movie {
 
     public Movie() {
 
+    }
+
+    public Movie(int id, String name, List<Ticket> tickets, String genre, int duration) {
+        this.id = id;
+        this.name = name;
+        this.tickets = tickets;
+        this.genre = genre;
+        this.duration = duration;
     }
 
     public void setTickets(List<Ticket> tickets) {
@@ -32,5 +42,13 @@ public class Movie {
         return tickets;
     }
 
-
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "name='" + name + '\'' +
+                ", countOfTickets=" + getCountOfTickets() +
+                ", genre='" + genre + '\'' +
+                ", duration=" + duration +
+                '}';
+    }
 }

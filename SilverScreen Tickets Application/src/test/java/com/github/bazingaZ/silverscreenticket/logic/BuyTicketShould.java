@@ -55,9 +55,7 @@ class BuyTicketShould {
         BuyTicket buyTicket = new BuyTicket(cinema);
         int movieId = movie.getId();
 
-        int totalMoneyPaidForTickets = 50000;
-
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
+        Assertions.assertThatThrownBy(() -> buyTicket.checksIfThereIsEnoughTicketLeft(movieId, 5))
                 .isInstanceOf(NoTicketsLeft.class);
     }
 
@@ -129,9 +127,7 @@ class BuyTicketShould {
 
         buyTicket.add(tickets, movieId);
 
-        int totalMoneyPaidForTickets = 40000;
-
-        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
+        Assertions.assertThatThrownBy(() -> buyTicket.checksIfThereIsEnoughTicketLeft(movieId, 5))
                 .isInstanceOf(InsufficientTicket.class);
 
     }

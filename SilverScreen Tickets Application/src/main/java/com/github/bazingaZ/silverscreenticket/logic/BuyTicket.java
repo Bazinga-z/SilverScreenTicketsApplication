@@ -23,22 +23,13 @@ public class BuyTicket {
         movie.setTickets(ticket);
     }
 
-    private Movie getMovie(int movieId) {
+    public Movie getMovie(int movieId) {
         return cinema.getMovie(movieId);
     }
 
     public int buyTicket(int movieId, int numberOfRequestedTickets, int totalMoneyPaidForTickets) {
 
         Movie movie = getMovie(movieId);
-
-        if (movie.getCountOfTickets() == 0) {
-            throw new NoTicketsLeft("No Tickets Left For This Movie.");
-        }
-
-        if (movie.getCountOfTickets() < numberOfRequestedTickets) {
-            throw new InsufficientTicket("We Don't Have That Much Ticket.");
-        }
-
 
         int totalMoneyNeccessaryToBuyTickets = 0;
 
@@ -55,5 +46,21 @@ public class BuyTicket {
 
         int remainingNumberOfTickets = movie.getCountOfTickets();
         return remainingNumberOfTickets;
+    }
+
+    public int getTotalPriceNeedToBePaidToBuyTickets(int numberOfRequestedTickets, int movieId) {
+        int priceOfOneTicket = getMovie(movieId).getTickets().get(0).getPrice();
+        return priceOfOneTicket * numberOfRequestedTickets;
+    }
+
+    public void checksIfThereIsEnoughTicketLeft(int movieId, int numberOfTickets) {
+
+        if (getMovie(movieId).getCountOfTickets() == 0) {
+            throw new NoTicketsLeft("No Tickets Left For This Movie.");
+        }
+
+        if (getMovie(movieId).getCountOfTickets() < numberOfTickets) {
+            throw new InsufficientTicket("We Don't Have That Much Ticket.");
+        }
     }
 }

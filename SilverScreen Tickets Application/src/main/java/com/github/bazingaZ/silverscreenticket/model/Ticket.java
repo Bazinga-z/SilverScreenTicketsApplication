@@ -18,4 +18,6 @@ public class Ticket {
     public int getPrice() {
         return price;
     }
+
+
 }

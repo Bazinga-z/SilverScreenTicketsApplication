@@ -21,11 +21,12 @@ public class CinemaImp implements Cinema {
 
     @Override
     public Movie getMovie(int movieId) {
-        try {
-            return movies.get(movieId);
-        } catch (Exception exception) {
-            throw new MovieNotFound("No Movie With That Id Exists");
+        for (Movie movie : movies) {
+            if (movie.getId() == movieId) {
+                return movie;
+            }
         }
+        throw new MovieNotFound("No Movie With That Id Exists");
     }
 
     @Override
