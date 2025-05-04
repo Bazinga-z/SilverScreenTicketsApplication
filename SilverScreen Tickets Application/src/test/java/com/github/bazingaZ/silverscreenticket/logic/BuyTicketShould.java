@@ -7,12 +7,23 @@ import com.github.bazingaZ.silverscreenticket.exception.NoTicketsLeft;
 import com.github.bazingaZ.silverscreenticket.model.Movie;
 import com.github.bazingaZ.silverscreenticket.model.Ticket;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class BuyTicketShould {
+
+    private Movie movie;
+    private List<Movie> movies;
+
+    @BeforeEach
+    void setUp() {
+        movie = new Movie();
+        movies = new ArrayList<>();
+        movies.add(movie);
+    }
 
     @Test
     void createTicketForExistingMovie() {
@@ -22,9 +33,7 @@ class BuyTicketShould {
         // If found, add a ticket with a validated price.
 
         // given
-        Movie movie = new Movie();
-        List<Movie> movies = new ArrayList<>();
-        movies.add(movie);
+
 
         var buyTicket = new BuyTicket(movies);
         List<Ticket> tickets = new ArrayList<>();
@@ -39,9 +48,6 @@ class BuyTicketShould {
     void shouldNotAllowedBuyingTicketForAMovieIfThereIsNoTicketsLeft() {
         // Find the movie; if no tickets exist, throw a custom exception.
 
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
 
         List<Ticket> tickets = new ArrayList<>();
         movie.setTickets(tickets);
@@ -61,7 +67,6 @@ class BuyTicketShould {
     void shouldNotAllowedBuyingTicketForNonExistentMovie() {
         // Try to find the movie; if the movie doesn't exist, throw a custom exception.
 
-        List<Movie> movies = new ArrayList<>();
 
         BuyTicket buyTicket = new BuyTicket(movies);
         int movieId = 5;
@@ -78,9 +83,7 @@ class BuyTicketShould {
         // Find the movie and get available tickets.
         // Deduct the number of tickets requested by the user.
         // Calculate the total price and complete the transaction if valid.
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie(0);
-        movies.add(movie);
+
 
         int movieId = movie.getId();
         BuyTicket buyTicket = new BuyTicket(movies);
@@ -101,9 +104,7 @@ class BuyTicketShould {
     @Test
     void shouldPreventPurchaseWhenInsufficientFunds() {
         // Calculate total price and throw a custom exception if funds are insufficient.
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie(0);
-        movies.add(movie);
+
 
         int movieId = movie.getId();
         BuyTicket buyTicket = new BuyTicket(movies);
@@ -124,9 +125,7 @@ class BuyTicketShould {
 
     @Test
     void shouldPreventPurchaseWhenInsufficientTicket() {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie(0);
-        movies.add(movie);
+
 
         int movieId = movie.getId();
         BuyTicket buyTicket = new BuyTicket(movies);
