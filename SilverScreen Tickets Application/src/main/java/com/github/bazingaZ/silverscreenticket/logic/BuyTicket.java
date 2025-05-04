@@ -10,23 +10,21 @@ import com.github.bazingaZ.silverscreenticket.model.Ticket;
 import java.util.List;
 
 public class BuyTicket {
-    private final List<Movie> movies;
 
-    public BuyTicket(List<Movie> movies) {
-        this.movies = movies;
+    private final Cinema cinema;
+
+
+    public BuyTicket(Cinema cinema) {
+        this.cinema = cinema;
     }
 
     public void add(List<Ticket> ticket, int movieId) {
-        Movie movie = movies.get(movieId);
+        Movie movie = cinema.getMovie(movieId);
         movie.setTickets(ticket);
     }
 
-    public Movie getMovie(int movieId) {
-        try {
-            return movies.get(movieId);
-        } catch (Exception exception) {
-            throw new MovieNotFound("No Movie With That Id Exists");
-        }
+    private Movie getMovie(int movieId) {
+        return cinema.getMovie(movieId);
     }
 
     public int buyTicket(int movieId, int numberOfRequestedTickets, int totalMoneyPaidForTickets) {
