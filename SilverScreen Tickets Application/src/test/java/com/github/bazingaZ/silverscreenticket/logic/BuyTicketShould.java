@@ -1,5 +1,9 @@
 package com.github.bazingaZ.silverscreenticket.logic;
 
+import com.github.bazingaZ.silverscreenticket.exception.InsufficientMoney;
+import com.github.bazingaZ.silverscreenticket.exception.InsufficientTicket;
+import com.github.bazingaZ.silverscreenticket.exception.MovieNotFound;
+import com.github.bazingaZ.silverscreenticket.exception.NoTicketsLeft;
 import com.github.bazingaZ.silverscreenticket.model.Movie;
 import com.github.bazingaZ.silverscreenticket.model.Ticket;
 import org.assertj.core.api.Assertions;
@@ -32,7 +36,7 @@ class BuyTicketShould {
     }
 
     @Test
-    void shouldNotAllowedBuyingTicketForNonExistentMovie() {
+    void shouldNotAllowedBuyingTicketForAMovieIfThereIsNoTicketsLeft() {
         // Find the movie; if no tickets exist, throw a custom exception.
 
         List<Movie> movies = new ArrayList<>();
@@ -49,8 +53,24 @@ class BuyTicketShould {
         int totalMoneyPaidForTickets = 50000;
 
         Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
-                .isInstanceOf(NoTicketsLeftException.class)
-                .hasMessage("No Tickets Left For This Movie.");
+                .isInstanceOf(NoTicketsLeft.class);
+
+    }
+
+    @Test
+    void shouldNotAllowedBuyingTicketForNonExistentMovie() {
+        // Try to find the movie; if the movie doesn't exist, throw a custom exception.
+
+        List<Movie> movies = new ArrayList<>();
+
+        BuyTicket buyTicket = new BuyTicket(movies);
+        int movieId = 5;
+
+        int totalMoneyPaidForTickets = 50000;
+
+        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
+                .isInstanceOf(MovieNotFound.class);
+
     }
 
     @Test
@@ -62,18 +82,18 @@ class BuyTicketShould {
         Movie movie = new Movie(0);
         movies.add(movie);
 
-        int movieId =movie.getId();
+        int movieId = movie.getId();
         BuyTicket buyTicket = new BuyTicket(movies);
 
         List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket(1,50000,movieId));
-        tickets.add(new Ticket(2,50000,movieId));
+        tickets.add(new Ticket(1, 50000, movieId));
+        tickets.add(new Ticket(2, 50000, movieId));
 
-        buyTicket.add(tickets,movieId);
+        buyTicket.add(tickets, movieId);
 
         int totalMoneyPaidForTickets = 50000;
 
-        int remainingNumberOfTickets = buyTicket.buyTicket(movieId,1, totalMoneyPaidForTickets);
+        int remainingNumberOfTickets = buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets);
 
         Assertions.assertThat(movie.getCountOfTickets()).isEqualTo(remainingNumberOfTickets);
     }
@@ -85,20 +105,43 @@ class BuyTicketShould {
         Movie movie = new Movie(0);
         movies.add(movie);
 
-        int movieId =movie.getId();
+        int movieId = movie.getId();
         BuyTicket buyTicket = new BuyTicket(movies);
 
         List<Ticket> tickets = new ArrayList<>();
-        tickets.add(new Ticket(1,50000,movieId));
-        tickets.add(new Ticket(2,50000,movieId));
+        tickets.add(new Ticket(1, 50000, movieId));
+        tickets.add(new Ticket(2, 50000, movieId));
 
-        buyTicket.add(tickets,movieId);
+        buyTicket.add(tickets, movieId);
 
         int totalMoneyPaidForTickets = 40000;
 
         Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 1, totalMoneyPaidForTickets))
-                .isInstanceOf(InsufficientMoneyException.class)
-                .hasMessage("Insufficient Money To Buy Tickets.");
+                .isInstanceOf(InsufficientMoney.class);
+
+
+    }
+
+    @Test
+    void shouldPreventPurchaseWhenInsufficientTicket() {
+        List<Movie> movies = new ArrayList<>();
+        Movie movie = new Movie(0);
+        movies.add(movie);
+
+        int movieId = movie.getId();
+        BuyTicket buyTicket = new BuyTicket(movies);
+
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(new Ticket(1, 50000, movieId));
+        tickets.add(new Ticket(2, 50000, movieId));
+
+        buyTicket.add(tickets, movieId);
+
+        int totalMoneyPaidForTickets = 40000;
+
+        Assertions.assertThatThrownBy(() -> buyTicket.buyTicket(movieId, 5, totalMoneyPaidForTickets))
+                .isInstanceOf(InsufficientTicket.class);
+
 
     }
 
