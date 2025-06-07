@@ -26,6 +26,12 @@
             <artifactId>assertj-core</artifactId>
             <version>3.26.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version> <!-- Check for the latest version -->
+        </dependency>
+
     </dependencies>
 
 </project>
