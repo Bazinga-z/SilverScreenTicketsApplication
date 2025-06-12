@@ -26,10 +26,17 @@
             <artifactId>assertj-core</artifactId>
             <version>3.26.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.0.0.Final</version>
+        </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.6.0</version> <!-- Check for the latest version -->
+            <version>42.6.0</version>
         </dependency>
 
     </dependencies>

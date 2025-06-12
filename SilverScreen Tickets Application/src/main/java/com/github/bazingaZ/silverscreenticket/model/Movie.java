@@ -1,12 +1,20 @@
 package com.github.bazingaZ.silverscreenticket.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
+
     private int countOfTickets;
     private String genre;
     private int duration;
