@@ -56,8 +56,16 @@ public class CinemaHibernateImp implements Cinema{
     public void addTicket(Ticket ticket) {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
-        session.persist(ticket);
+
+        Movie movie = ticket.getMovie(); // ✅ Get the associated movie
+        movie.getTickets().add(ticket); // ✅ Add ticket to movie's list
+        movie.setCountOfTickets(movie.getTickets().size()); // ✅ Update ticket count before saving
+
+        session.persist(ticket); // ✅ Save the ticket
+        session.merge(movie); // ✅ Update the movie in the database
+
         session.getTransaction().commit();
         session.close();
     }
+
 }
