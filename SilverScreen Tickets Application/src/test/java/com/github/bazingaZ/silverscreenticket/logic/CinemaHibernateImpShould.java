@@ -10,7 +10,7 @@ public class CinemaHibernateImpShould {
 
     @Test
     void addMovieToDatabase() {
-        Movie movie = new Movie("The A", "sci-fi", 149);
+        Movie movie = new Movie("The C", "sci-fi", 200);
         Cinema cinema = new CinemaHibernateImp();
         cinema.addMovie(movie);
     }

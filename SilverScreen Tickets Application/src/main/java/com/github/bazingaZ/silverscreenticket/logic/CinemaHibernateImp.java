@@ -36,10 +36,7 @@ public class CinemaHibernateImp implements Cinema{
         Movie foundMovie = session.get(Movie.class, movie.getId());
         session.getTransaction().commit();
         session.close();
-        if (foundMovie.equals(movie)) {
-            return true;
-        }
-        return false;
+        return foundMovie.equals(movie);
     }
 
     @Override
